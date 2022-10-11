@@ -1,4 +1,5 @@
-﻿using Lab2;
+﻿using System.Threading.Channels;
+using Lab2;
 
 var KundLista = new List<Kund>();
 var ProdLista = new List<Produkter>();
@@ -11,11 +12,17 @@ ProdLista.Add(new Produkter{Produkt = "Mjöd", Pris = 25});
 ProdLista.Add(new Produkter{Produkt = "Mjöl", Pris = 20});
 ProdLista.Add(new Produkter{Produkt = "Mjölk", Pris = 15});
 
-VisaProdukter();
+Console.WriteLine("lägg till användare");
+
+LäggTillAnvändare();
+
+Login();
 
 void Login()
 {
+    Console.Write("Skriv in ditt namn: ");
     var använd = Console.ReadLine();
+    Console.WriteLine("Skriv in ditt lösenord");
     var pass = Console.ReadLine();
 
     foreach (var kund in KundLista)
@@ -39,4 +46,14 @@ void VisaProdukter()
         Console.WriteLine($"{i}. {produkter.Produkt} pris: {produkter.Pris}:-");
         i++;
     }
+}
+
+void LäggTillAnvändare()
+{
+    Console.Write("Skriv in ditt namn: ");
+    string namn = Console.ReadLine();
+    Console.Write("välj ett lösenord: ");
+    string pass = Console.ReadLine();
+
+    KundLista.Add(new Kund{Password = pass, Person = namn});
 }
