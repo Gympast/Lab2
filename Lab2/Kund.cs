@@ -18,6 +18,14 @@ public class Kund
 		set { _password = value; }
 	}
 
+    private List<Produkter> _cart;
+
+    public List<Produkter> Cart
+    {
+        get { return _cart;}
+        set { Cart = value; }
+    }
+
 	public bool KollaLösenord(string pass)
 	{
         if (pass == _password)
