@@ -1,47 +1,75 @@
 ﻿using System.Threading.Channels;
 using Lab2;
 
-var KundLista = new List<Kund>();
-var ProdLista = new List<Produkter>();
+var kundLista = new List<Kund>();
+var prodLista = new List<Produkter>();
 
-KundLista.Add(new Kund{Password = "123", Person = "Knatte"});
-KundLista.Add(new Kund{Password = "321", Person = "Fnatte"});
-KundLista.Add(new Kund{Password = "213", Person = "Tjatte"});
+kundLista.Add(new Kund { Password = "123", Person = "Knatte" });
+kundLista.Add(new Kund { Password = "321", Person = "Fnatte" });
+kundLista.Add(new Kund { Password = "213", Person = "Tjatte" });
 
-ProdLista.Add(new Produkter{Produkt = "Mjöd", Pris = 25});
-ProdLista.Add(new Produkter{Produkt = "Mjöl", Pris = 20});
-ProdLista.Add(new Produkter{Produkt = "Mjölk", Pris = 15});
+prodLista.Add(new Produkter { Produkt = "Mjöd", Pris = 25 });
+prodLista.Add(new Produkter { Produkt = "Mjöl", Pris = 20 });
+prodLista.Add(new Produkter { Produkt = "Mjölk", Pris = 15 });
 
-Console.WriteLine("lägg till användare");
+Kund? aktivanvändare = null;
 
-LäggTillAnvändare();
 
-Login();
+
+bool startMeny = true;
+
+HuvudMeny();
+
+VisaProdukter();
+
+Shop();
 
 void Login()
 {
+    bool password = false;
+
     Console.Write("Skriv in ditt namn: ");
     var använd = Console.ReadLine();
-    Console.WriteLine("Skriv in ditt lösenord");
-    var pass = Console.ReadLine();
-
-    foreach (var kund in KundLista)
+    foreach (var kund in kundLista)
     {
-        if (kund.Person == använd)
+        if (kund.Person == använd.ToLower())
         {
+            Console.Write("Skriv in ditt lösenord: ");
+            var pass = Console.ReadLine();
+
             if (kund.KollaLösenord(pass))
             {
-                Console.WriteLine("true");
+                password = true;
+                aktivanvändare = kund;
+                startMeny = false;
+                break;
             }
         }
+
+        if (password)
+        {
+            break;
+        }
+        startMeny = true;
     }
+
+    if (password)
+    {
+        Console.WriteLine("true");
+
+    }
+    else if(aktivanvändare is null)
+    {
+        
+    }
+
 }
 
 void VisaProdukter()
 {
     Console.WriteLine("Vilken produkt önskas köpa? Välj med siffror");
     int i = 1;
-    foreach (var produkter in ProdLista)
+    foreach (var produkter in prodLista)
     {
         Console.WriteLine($"{i}. {produkter.Produkt} pris: {produkter.Pris}:-");
         i++;
@@ -50,10 +78,70 @@ void VisaProdukter()
 
 void LäggTillAnvändare()
 {
+    bool ejUpptaget = true;
     Console.Write("Skriv in ditt namn: ");
     string namn = Console.ReadLine();
-    Console.Write("välj ett lösenord: ");
-    string pass = Console.ReadLine();
 
-    KundLista.Add(new Kund{Password = pass, Person = namn});
+    foreach (var kund in kundLista)
+    {
+        if (kund.Person == namn)
+        {
+            ejUpptaget = false;
+        }
+    }
+
+    if (ejUpptaget)
+    {
+        Console.Write("välj ett lösenord: ");
+        string pass = Console.ReadLine();
+
+        kundLista.Add(new Kund { Password = pass, Person = namn });
+
+    }
+    else
+    {
+        Console.WriteLine("Namnet är redan taget, vänligen välj ett annat");
+    }
 }
+
+void Shop()
+{
+    var inputProd = Console.ReadLine();
+    foreach (var produkt in prodLista)
+    {
+        if (produkt.Produkt == inputProd)
+        {
+            aktivanvändare.Cart.Add(produkt);
+        }
+    }
+}
+
+void HuvudMeny()
+{
+    Console.WriteLine("Välkommen! Hur kan jag hjälpa dig idag?");
+
+    while (startMeny)
+    {
+        Console.WriteLine("1. Lägg till användare.");
+        Console.WriteLine("2. Logga in.");
+
+        int val1 = int.Parse(Console.ReadLine());
+
+        switch (val1)
+        {
+            case 1:
+                LäggTillAnvändare();
+                break;
+
+            case 2:
+                startMeny = false;
+                Login();
+                break;
+
+            default:
+                Console.WriteLine("Vänligen välj 1 eller 2.");
+                break;
+        }
+    }
+}
+

@@ -6,7 +6,7 @@ public class Kund
 
 	public string Person
 	{
-		get { return _person; }
+		get { return _person.ToLower(); }
 		set { _person = value; }
 	}
 
@@ -18,7 +18,7 @@ public class Kund
 		set { _password = value; }
 	}
 
-    private List<Produkter> _cart;
+    private List<Produkter> _cart = new List<Produkter>();
 
     public List<Produkter> Cart
     {
@@ -44,6 +44,7 @@ public class Kund
     {
         Console.WriteLine($"Användare: {Person}");
         Console.WriteLine($"Lösenord; {Password}");
+        Console.WriteLine($"Kundvagn: {Cart}");
 
     }
 
