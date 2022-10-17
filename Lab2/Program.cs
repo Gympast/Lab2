@@ -24,6 +24,8 @@ VisaProdukter();
 
 Shop();
 
+SeInfo();
+
 void Login()
 {
     bool password = false;
@@ -67,7 +69,7 @@ void Login()
 
 void VisaProdukter()
 {
-    Console.WriteLine("Vilken produkt önskas köpa? Välj med siffror");
+    Console.WriteLine("Vilken produkt önskas köpa?");
     int i = 1;
     foreach (var produkter in prodLista)
     {
@@ -100,6 +102,7 @@ void LäggTillAnvändare()
     }
     else
     {
+        Console.Clear();
         Console.WriteLine("Namnet är redan taget, vänligen välj ett annat");
     }
 }
@@ -109,7 +112,7 @@ void Shop()
     var inputProd = Console.ReadLine();
     foreach (var produkt in prodLista)
     {
-        if (produkt.Produkt == inputProd)
+        if (produkt.Produkt.ToLower() == inputProd.ToLower())
         {
             aktivanvändare.Cart.Add(produkt);
         }
@@ -145,3 +148,11 @@ void HuvudMeny()
     }
 }
 
+void SeInfo()
+{
+    aktivanvändare.ToString();
+    foreach (var prod in aktivanvändare.Cart)
+    {
+        Console.WriteLine($"{prod.Produkt} Pris: {prod.Pris}");
+    }
+}

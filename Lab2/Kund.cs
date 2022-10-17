@@ -44,8 +44,6 @@ public class Kund
     {
         Console.WriteLine($"Användare: {Person}");
         Console.WriteLine($"Lösenord; {Password}");
-        Console.WriteLine($"Kundvagn: {Cart}");
-
     }
 
 }
