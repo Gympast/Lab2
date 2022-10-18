@@ -109,6 +109,7 @@ void LäggTillAnvändare()
 
 void Shop()
 {
+    //loop
     var inputProd = Console.ReadLine();
     foreach (var produkt in prodLista)
     {
@@ -121,6 +122,7 @@ void Shop()
 
 void HuvudMeny()
 {
+    
     Console.WriteLine("Välkommen! Hur kan jag hjälpa dig idag?");
 
     while (startMeny)
@@ -153,6 +155,31 @@ void SeInfo()
     aktivanvändare.ToString();
     foreach (var prod in aktivanvändare.Cart)
     {
-        Console.WriteLine($"{prod.Produkt} Pris: {prod.Pris}");
+        Console.WriteLine($"{prod.Produkt} Pris: {prod.Pris}:-");
+    }
+}
+
+void InloggadMeny()
+{
+    Console.WriteLine($"Hej {aktivanvändare.Person}! Vad önskas?");
+
+    int Val = int.Parse(Console.ReadLine());
+
+    switch (Val)
+    {
+        case 1: 
+            //Lägg till varor
+            break;
+
+        case 2:
+            //se kundkorg
+            break;
+        case 3:
+            //logga ut
+            break;
+
+        default:
+            //välj nåt av ovanstående
+            break;
     }
 }
