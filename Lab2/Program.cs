@@ -1,4 +1,6 @@
-﻿using System.Threading.Channels;
+﻿using System.Net.Mime;
+using System.Runtime.CompilerServices;
+using System.Threading.Channels;
 using Lab2;
 
 var kundLista = new List<Kund>();
@@ -18,9 +20,10 @@ Kund? aktivanvändare = null;
 
 bool startMeny = true;
 
+
 HuvudMeny();
 
-VisaProdukter();
+InloggadMeny();
 
 Shop();
 
@@ -129,8 +132,10 @@ void HuvudMeny()
     {
         Console.WriteLine("1. Lägg till användare.");
         Console.WriteLine("2. Logga in.");
+        Console.WriteLine("3. Avsluta program.");
 
-        int val1 = int.Parse(Console.ReadLine());
+        var val1 = int.Parse(Console.ReadLine());
+        
 
         switch (val1)
         {
@@ -143,6 +148,10 @@ void HuvudMeny()
                 Login();
                 break;
 
+            case 3:
+                Environment.Exit(0);
+                break;
+
             default:
                 Console.WriteLine("Vänligen välj 1 eller 2.");
                 break;
@@ -153,29 +162,38 @@ void HuvudMeny()
 void SeInfo()
 {
     aktivanvändare.ToString();
+    int total = 0;
     foreach (var prod in aktivanvändare.Cart)
     {
         Console.WriteLine($"{prod.Produkt} Pris: {prod.Pris}:-");
+        total += prod.Pris;
     }
+
+    Console.WriteLine($"Total Kostnad: {total}:-");
 }
 
 void InloggadMeny()
 {
     Console.WriteLine($"Hej {aktivanvändare.Person}! Vad önskas?");
+    Console.WriteLine($"1. Lägg till varor: \n2. Se kundkorgen \n3. Logga ut");
 
     int Val = int.Parse(Console.ReadLine());
 
     switch (Val)
     {
-        case 1: 
+        case 1:
             //Lägg till varor
+            VisaProdukter();
             break;
 
         case 2:
             //se kundkorg
+            SeInfo();
             break;
         case 3:
             //logga ut
+            Kund? aktivanvändare = null;
+            HuvudMeny();
             break;
 
         default:
