@@ -44,6 +44,14 @@ public class Kund
     {
         Console.WriteLine($"Användare: {Person}");
         Console.WriteLine($"Lösenord; {Password}");
+        int total = 0;
+        foreach (var produkter in Cart)
+        {
+            Console.WriteLine($"{produkter.Produkt} {produkter.Pris}:-");
+            total += produkter.Pris;
+        }
+
+        Console.WriteLine($"Total summa: {total}");
     }
 
 }

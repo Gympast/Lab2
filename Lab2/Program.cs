@@ -1,7 +1,4 @@
-﻿using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Threading.Channels;
-using Lab2;
+﻿using Lab2;
 
 var kundLista = new List<Kund>();
 var prodLista = new List<Produkter>();
@@ -21,17 +18,16 @@ Kund? aktivanvändare = null;
 bool startMeny = true;
 
 
+
 HuvudMeny();
 
-InloggadMeny();
 
-Shop();
 
-SeInfo();
 
 void Login()
 {
     bool password = false;
+    bool FelAnvändare = true;
 
     Console.Write("Skriv in ditt namn: ");
     var använd = Console.ReadLine();
@@ -40,32 +36,69 @@ void Login()
         if (kund.Person == använd.ToLower())
         {
             Console.Write("Skriv in ditt lösenord: ");
-            var pass = Console.ReadLine();
+            
 
-            if (kund.KollaLösenord(pass))
+            int Försök = 0;
+
+            while (Försök < 3 ) 
             {
-                password = true;
-                aktivanvändare = kund;
-                startMeny = false;
+                var pass = Console.ReadLine();
+                if (kund.KollaLösenord(pass))
+                {
+                    aktivanvändare = kund;
+                    startMeny = false;
+                    InloggadMeny();
+                    break;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Felaktigt lösenord. Prova igen");
+                    Försök++;
+                }
+            }
+            if (Försök == 3)
+            {
+                Console.Clear();
+                Console.WriteLine("Förmånga felaktiga försök");
+                Console.WriteLine("Återgår till huvudmeny...");
+                Thread.Sleep(1500);
+                Console.Clear();
+                startMeny = true;
+                HuvudMeny();
                 break;
             }
         }
 
-        if (password)
-        {
-            break;
-        }
         startMeny = true;
     }
+    Console.Clear();
+    Console.WriteLine("Användaren finns ej. Önskas lägga till en ny användare?");
 
-    if (password)
+    
+    while (FelAnvändare)
     {
-        Console.WriteLine("true");
+        Console.WriteLine("1. Ny användare");
+        Console.WriteLine("2. Återgå till huvudmeny");
+        string val = Console.ReadLine();
+        switch (val)
+        {
+            case "1":
+                Console.Clear();
+                LäggTillAnvändare();
+                FelAnvändare = false;
+                break;
 
-    }
-    else if(aktivanvändare is null)
-    {
-        
+            case "2":
+                Console.Clear();
+                FelAnvändare = false;
+                break;
+
+            default:
+                Console.Clear();
+                Console.WriteLine("Välj alternativ 1 eller 2");
+                break;
+        }
     }
 
 }
@@ -73,11 +106,9 @@ void Login()
 void VisaProdukter()
 {
     Console.WriteLine("Vilken produkt önskas köpa?");
-    int i = 1;
     foreach (var produkter in prodLista)
     {
-        Console.WriteLine($"{i}. {produkter.Produkt} pris: {produkter.Pris}:-");
-        i++;
+        Console.WriteLine($"{produkter.Produkt} pris: {produkter.Pris}:-");
     }
 }
 
@@ -101,67 +132,88 @@ void LäggTillAnvändare()
         string pass = Console.ReadLine();
 
         kundLista.Add(new Kund { Password = pass, Person = namn });
+        Console.Clear();
 
     }
     else
     {
         Console.Clear();
-        Console.WriteLine("Namnet är redan taget, vänligen välj ett annat");
+        Console.WriteLine("Namnet är redan taget, vänligen försök igen");
+        
     }
 }
 
 void Shop()
 {
-    //loop
+    bool FinnsEJ = true;
     var inputProd = Console.ReadLine();
     foreach (var produkt in prodLista)
     {
         if (produkt.Produkt.ToLower() == inputProd.ToLower())
         {
             aktivanvändare.Cart.Add(produkt);
+            Console.Clear();
+            Console.WriteLine($"La till {inputProd} i kundvagnen");
+            Console.WriteLine();
+            FinnsEJ = false;
+            break;
         }
+
     }
+
+    if (FinnsEJ)
+    {
+        Console.Clear();
+        Console.WriteLine("Produkten finns ej i sortimentet");
+        Console.WriteLine();
+    }
+
 }
 
 void HuvudMeny()
 {
+
     
-    Console.WriteLine("Välkommen! Hur kan jag hjälpa dig idag?");
 
     while (startMeny)
     {
+        Console.WriteLine("Välkommen! Hur kan jag hjälpa dig idag?");
         Console.WriteLine("1. Lägg till användare.");
         Console.WriteLine("2. Logga in.");
         Console.WriteLine("3. Avsluta program.");
 
-        var val1 = int.Parse(Console.ReadLine());
+        var val1 = Console.ReadLine();
         
 
         switch (val1)
         {
-            case 1:
+            case "1":
+                Console.Clear();
                 LäggTillAnvändare();
                 break;
 
-            case 2:
+            case "2":
+                Console.Clear();
                 startMeny = false;
                 Login();
                 break;
 
-            case 3:
+            case "3":
+                Console.Clear();
                 Environment.Exit(0);
                 break;
 
             default:
-                Console.WriteLine("Vänligen välj 1 eller 2.");
+                Console.Clear();
+                Console.WriteLine("Vänligen välj 1, 2 eller 3.");
                 break;
         }
     }
 }
 
-void SeInfo()
+void SeKundvagn()
 {
-    aktivanvändare.ToString();
+    Console.Clear();
     int total = 0;
     foreach (var prod in aktivanvändare.Cart)
     {
@@ -169,35 +221,86 @@ void SeInfo()
         total += prod.Pris;
     }
 
-    Console.WriteLine($"Total Kostnad: {total}:-");
+    if (total == 0)
+    {
+        Console.WriteLine("Varukorgen är tom");
+    }
+    else
+    {
+        Console.WriteLine($"Total Kostnad: {total}:-");
+    }
 }
 
 void InloggadMeny()
 {
+    Console.Clear();
+    bool shopping = true;
+
     Console.WriteLine($"Hej {aktivanvändare.Person}! Vad önskas?");
-    Console.WriteLine($"1. Lägg till varor: \n2. Se kundkorgen \n3. Logga ut");
 
-    int Val = int.Parse(Console.ReadLine());
+    while (shopping){
+    
+        Console.WriteLine("1. Lägg till varor");
+        Console.WriteLine("2. Se kundkorg");
+        Console.WriteLine("3. Töm kundkorg");
+        Console.WriteLine("4. Se info angående aktiv användare");
+        Console.WriteLine("5. Logga ut");
 
-    switch (Val)
-    {
-        case 1:
-            //Lägg till varor
-            VisaProdukter();
-            break;
+        string Val = Console.ReadLine();
 
-        case 2:
-            //se kundkorg
-            SeInfo();
-            break;
-        case 3:
-            //logga ut
-            Kund? aktivanvändare = null;
-            HuvudMeny();
-            break;
+        switch (Val)
+        {
+            case "1":
+                Console.Clear();
+                VisaProdukter();
+                Shop();
+                break;
 
-        default:
-            //välj nåt av ovanstående
-            break;
+            case "2":
+                Console.Clear();
+                SeKundvagn();
+                Console.WriteLine();
+                Console.WriteLine("Tryck på valfri tangent för att komma vidare");
+                Console.ReadKey();
+                Console.Clear();
+                break;
+
+            case "3":
+                string Vagn = "Tömmer Kundvagn.";
+                Console.Clear();
+                for (int mil = 1000; mil < 1003; mil++)
+                {
+                    Console.WriteLine(Vagn);
+                    Thread.Sleep(mil);
+                    Vagn += ".";
+                    Console.Clear();
+                }
+                aktivanvändare.Cart.Clear();
+                Console.Clear();
+                break;
+
+            case "4":
+                Console.Clear();
+                aktivanvändare.ToString();
+                Console.WriteLine();
+                Console.WriteLine("Tryck på valfri tangent för att komma vidare");
+                Console.ReadKey();
+                Console.Clear();
+                break;
+
+            case "5":
+                aktivanvändare = null;
+                shopping = false;
+                Console.Clear();
+                startMeny = true;
+                HuvudMeny();
+                break;
+            
+
+            default:
+                Console.Clear();
+                Console.WriteLine("Vändligen välj något av nedanstående");
+                break;
     }
+}
 }
