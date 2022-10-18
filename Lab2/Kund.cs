@@ -6,8 +6,8 @@ public class Kund
 
 	public string Person
 	{
-		get { return _person.ToLower(); }
-		set { _person = value; }
+		get { return _person; }
+		set { _person = value.ToLower(); }
 	}
 
 	private string _password;
@@ -45,11 +45,34 @@ public class Kund
         Console.WriteLine($"Användare: {Person}");
         Console.WriteLine($"Lösenord; {Password}");
         int total = 0;
+        int MjölkCount = 0;
+        int MjödCount = 0;
+        int MjölCOunt = 0;
+
+        //contains
         foreach (var produkter in Cart)
         {
-            Console.WriteLine($"{produkter.Produkt} {produkter.Pris}:-");
+            if (produkter.Produkt == "Mjölk")
+            {
+                MjölkCount++;
+            }
+
+            if (produkter.Produkt == "Mjöd")
+            {
+                MjödCount++;
+            }
+
+            if (produkter.Produkt == "Mjöl")
+            {
+                MjölkCount++;
+            }
+            
             total += produkter.Pris;
         }
+
+        Console.WriteLine($"Antal Mjölk: {MjölkCount}");
+        Console.WriteLine($"Antal Mjöd: {MjödCount}");
+        Console.WriteLine($"Antal Mjöl: {MjölCOunt}");
 
         Console.WriteLine($"Total summa: {total}");
     }
