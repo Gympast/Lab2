@@ -43,16 +43,18 @@ public class Kund
     public void ToString()
     {
         Console.WriteLine($"Användare: {Person}");
+        Console.WriteLine();
         Console.WriteLine($"Lösenord; {Password}");
+        Console.WriteLine();
         int total = 0;
         int MjölkCount = 0;
         int MjödCount = 0;
-        int MjölCOunt = 0;
+        int MjölCount = 0;
 
         //contains
         foreach (var produkter in Cart)
         {
-            if (produkter.Produkt == "Mjölk")
+            if (produkter.Produkt.Equals(Cart[0]))
             {
                 MjölkCount++;
             }
@@ -64,7 +66,7 @@ public class Kund
 
             if (produkter.Produkt == "Mjöl")
             {
-                MjölkCount++;
+                MjölCount++;
             }
             
             total += produkter.Pris;
@@ -72,8 +74,8 @@ public class Kund
 
         Console.WriteLine($"Antal Mjölk: {MjölkCount}");
         Console.WriteLine($"Antal Mjöd: {MjödCount}");
-        Console.WriteLine($"Antal Mjöl: {MjölCOunt}");
-
+        Console.WriteLine($"Antal Mjöl: {MjölCount}");
+        Console.WriteLine();
         Console.WriteLine($"Total summa: {total}");
     }
 
