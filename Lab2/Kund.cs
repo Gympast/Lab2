@@ -46,15 +46,15 @@ public class Kund
         Console.WriteLine();
         Console.WriteLine($"Lösenord; {Password}");
         Console.WriteLine();
-        int total = 0;
-        int MjölkCount = 0;
-        int MjödCount = 0;
-        int MjölCount = 0;
+        var total = 0;
+        var MjölkCount = 0;
+        var MjödCount = 0;
+        var MjölCount = 0;
 
         //contains
         foreach (var produkter in Cart)
         {
-            if (produkter.Produkt.Equals(Cart[0]))
+            if (produkter.Produkt == "Mjölk")
             {
                 MjölkCount++;
             }
@@ -72,9 +72,20 @@ public class Kund
             total += produkter.Pris;
         }
 
-        Console.WriteLine($"Antal Mjölk: {MjölkCount}");
-        Console.WriteLine($"Antal Mjöd: {MjödCount}");
-        Console.WriteLine($"Antal Mjöl: {MjölCount}");
+        if (MjölCount > 0)
+        {
+            Console.WriteLine($"Antal Mjöl: {MjölCount}");
+        }
+
+        if (MjödCount < 0)
+        {
+            Console.WriteLine($"Antal Mjöd: {MjödCount}");
+        }
+
+        if (MjölkCount < 0)
+        {
+            Console.WriteLine($"Antal Möjlk: {MjölkCount}");
+        }
         Console.WriteLine();
         Console.WriteLine($"Total summa: {total}");
     }
