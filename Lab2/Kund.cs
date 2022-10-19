@@ -7,7 +7,7 @@ public class Kund
 	public string Person
 	{
 		get { return _person; }
-		set { _person = value.ToLower(); }
+		set { _person = value; }
 	}
 
 	private string _password;
@@ -50,23 +50,27 @@ public class Kund
         var MjölkCount = 0;
         var MjödCount = 0;
         var MjölCount = 0;
+        var NotEmpty = false;
 
-        //contains
+        
         foreach (var produkter in Cart)
         {
             if (produkter.Produkt == "Mjölk")
             {
                 MjölkCount++;
+                NotEmpty = true;
             }
 
             if (produkter.Produkt == "Mjöd")
             {
                 MjödCount++;
+                NotEmpty = true;
             }
 
             if (produkter.Produkt == "Mjöl")
             {
                 MjölCount++;
+                NotEmpty = true;
             }
             
             total += produkter.Pris;
@@ -77,17 +81,25 @@ public class Kund
             Console.WriteLine($"Antal Mjöl: {MjölCount}");
         }
 
-        if (MjödCount < 0)
+        if (MjödCount > 0)
         {
             Console.WriteLine($"Antal Mjöd: {MjödCount}");
         }
 
-        if (MjölkCount < 0)
+        if (MjölkCount > 0)
         {
             Console.WriteLine($"Antal Möjlk: {MjölkCount}");
         }
-        Console.WriteLine();
-        Console.WriteLine($"Total summa: {total}");
+        
+        if (NotEmpty)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Antal artiklar: {Cart.Count}\nTotal summa: {total}");
+        }
+        else
+        {
+            Console.WriteLine("Kundvagnen är tom");
+        }
     }
 
 }
