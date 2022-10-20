@@ -32,19 +32,15 @@ public class Kund
         {
             return true;
         }
-        else
-        {
-            Console.WriteLine("Fel lösenord");
-            return false;
-        }
 
+        return false;
     }
 
     public void ToString()
     {
         Console.WriteLine($"Användare: {Person}");
         Console.WriteLine();
-        Console.WriteLine($"Lösenord; {Password}");
+        Console.WriteLine($"Lösenord: {Password}");
         Console.WriteLine();
         var total = 0;
         var MjölkCount = 0;
@@ -88,13 +84,13 @@ public class Kund
 
         if (MjölkCount > 0)
         {
-            Console.WriteLine($"Antal Möjlk: {MjölkCount}");
+            Console.WriteLine($"Antal Mjölk: {MjölkCount}");
         }
         
         if (NotEmpty)
         {
             Console.WriteLine();
-            Console.WriteLine($"Antal artiklar: {Cart.Count}\nTotal summa: {total}");
+            Console.WriteLine($"Antal artiklar: {Cart.Count}\nTotal summa: {total}:-");
         }
         else
         {

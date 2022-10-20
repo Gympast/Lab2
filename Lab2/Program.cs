@@ -34,7 +34,7 @@ void Login()
     
     foreach (var kund in kundLista)
     {
-        if (kund.Person == använd.ToLower())
+        if (kund.Person.ToLower() == använd.ToLower())
         {
             Console.Write("Skriv in ditt lösenord: ");
             
@@ -127,7 +127,7 @@ void LäggTillAnvändare()
 
     foreach (var kund in kundLista)
     {
-        if (kund.Person == namn)
+        if (kund.Person.ToLower() == namn.ToLower())
         {
             ejUpptaget = false;
         }
@@ -161,7 +161,7 @@ void Shop()
         {
             aktivanvändare.Cart.Add(produkt);
             Console.Clear();
-            Console.WriteLine($"La till {inputProd} i kundvagnen");
+            Console.WriteLine($"{inputProd} tillagd i kundvagnen");
             Console.WriteLine();
             FinnsEJ = false;
             break;
@@ -219,26 +219,6 @@ void HuvudMeny()
     }
 }
 
-//void SeKundvagn()
-//{
-//    Console.Clear();
-//    int total = 0;
-//    foreach (var prod in aktivanvändare.Cart)
-//    {
-//        Console.WriteLine($"{prod.Produkt} Pris: {prod.Pris}:-");
-//        total += prod.Pris;
-//    }
-
-//    if (total == 0)
-//    {
-//        Console.WriteLine("Varukorgen är tom");
-//    }
-//    else
-//    {
-//        Console.WriteLine($"Total Kostnad: {total}:-");
-//    }
-//}
-
 void InloggadMeny()
 {
     Console.Clear();
@@ -249,10 +229,9 @@ void InloggadMeny()
     while (shopping){
     
         Console.WriteLine("1. Lägg till varor");
-        Console.WriteLine("2. Se kundkorg");
-        Console.WriteLine("3. Töm kundkorg");
-        Console.WriteLine("4. Se info angående aktiv användare");
-        Console.WriteLine("5. Logga ut");
+        Console.WriteLine("2. Töm kundkorg");
+        Console.WriteLine("3. Se info angående aktiv användare samt kundvagn");
+        Console.WriteLine("4. Logga ut");
 
         string Val = Console.ReadLine();
 
@@ -265,15 +244,6 @@ void InloggadMeny()
                 break;
 
             case "2":
-                Console.Clear();
-                //SeKundvagn();
-                Console.WriteLine();
-                Console.WriteLine("Tryck på valfri tangent för att komma vidare");
-                Console.ReadKey();
-                Console.Clear();
-                break;
-
-            case "3":
                 string Vagn = "Tömmer Kundvagn.";
                 Console.Clear();
                 for (int mil = 1000; mil < 1003; mil++)
@@ -287,7 +257,7 @@ void InloggadMeny()
                 Console.Clear();
                 break;
 
-            case "4":
+            case "3":
                 Console.Clear();
                 aktivanvändare.ToString();
                 Console.WriteLine();
@@ -296,7 +266,7 @@ void InloggadMeny()
                 Console.Clear();
                 break;
 
-            case "5":
+            case "4":
                 aktivanvändare = null;
                 shopping = false;
                 Console.Clear();
